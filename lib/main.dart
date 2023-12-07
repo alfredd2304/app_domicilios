@@ -1,8 +1,15 @@
 import 'package:app_domicilios/Repartidor/repartidor_main.dart';
 import 'package:app_domicilios/Usuario/usuario_main.dart';
+import 'package:app_domicilios/providers/estado_pedido.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(ChangeNotifierProvider(
+    create: (_) => EstadoPedidoProvider(),
+    child: const MyApp(),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -33,7 +40,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-
   final List<Widget> _pages = const [UserHome(), RepartidorHome()];
 
   @override
