@@ -1,12 +1,16 @@
 import 'package:app_domicilios/Repartidor/repartidor_main.dart';
 import 'package:app_domicilios/Usuario/usuario_main.dart';
 import 'package:app_domicilios/providers/estado_pedido.dart';
+import 'package:app_domicilios/providers/pedido_realizado.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (_) => EstadoPedidoProvider(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => PedidoRealizadoProvider()),
+      ChangeNotifierProvider(create: (_) => EstadoPedidoProvider()),
+    ],
     child: const MyApp(),
   ));
 }

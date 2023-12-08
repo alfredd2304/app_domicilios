@@ -1,4 +1,5 @@
 import 'package:app_domicilios/providers/estado_pedido.dart';
+import 'package:app_domicilios/providers/pedido_realizado.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +16,9 @@ class _UserHomeState extends State<UserHome> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          bool estado1 = context.read<EstadoPedidoProvider>().estadoPedido;
-          if (estado1 == false) {
+          bool pedidoRealizado =
+              context.read<PedidoRealizadoProvider>().pedidoRealizado;
+          if (pedidoRealizado == false) {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -32,11 +34,11 @@ class _UserHomeState extends State<UserHome> {
                   MaterialPageRoute(
                       builder: (context) => const UserOrderState()));
 
-              context.read<EstadoPedidoProvider>().onPedidoRealizado();
+              context.read<PedidoRealizadoProvider>().onPedidoRealizado();
 
               _mostrarAlerta(context);
             });
-          } else if (estado1 == true) {
+          } else if (pedidoRealizado == true) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -46,7 +48,7 @@ class _UserHomeState extends State<UserHome> {
         style: ButtonStyle(
             padding: MaterialStateProperty.all(
                 const EdgeInsets.symmetric(horizontal: 25, vertical: 15))),
-        child: Text(context.watch<EstadoPedidoProvider>().estadoPedido
+        child: Text(context.watch<PedidoRealizadoProvider>().pedidoRealizado
             ? "Ver Pedido"
             : "Realizar Pedido"),
       ),
@@ -64,12 +66,12 @@ class UserOrderState extends StatefulWidget {
 class _UserOrderStateState extends State<UserOrderState> {
   @override
   Widget build(BuildContext context) {
+    String estadoPedido = context.read<EstadoPedidoProvider>().estadoPedido;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pedido del Usuario"),
-      ),
-      body: const Column(children: [Text("Estado Del pedido: ****")]),
-    );
+        appBar: AppBar(
+          title: const Text("Pedido del Usuario"),
+        ),
+        body: Column(children: [Text("Estado Del pedido: $estadoPedido")]));
   }
 }
 

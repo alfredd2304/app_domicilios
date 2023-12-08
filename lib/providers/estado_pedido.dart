@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 
 class EstadoPedidoProvider with ChangeNotifier {
-  bool _pedidoRealizado = false;
+  String _estadoPedido = "Nuevo";
 
-  bool get estadoPedido => _pedidoRealizado;
+  String get estadoPedido => _estadoPedido;
 
-  void onPedidoRealizado() {
-    _pedidoRealizado = true;
+  void onEstadoPedidoChange() {
+    switch (_estadoPedido) {
+      case "En preparacion":
+        _estadoPedido = "Despachado";
+        break;
+      case "Despachado":
+        _estadoPedido = "Entregado";
+        break;
+      case "Entregado":
+        _estadoPedido = "Queja";
+        break;
+      case "Queja":
+        _estadoPedido = "Finalizado";
+        break;
+
+      default:
+        _estadoPedido = "En preparacion";
+    }
+
     notifyListeners();
   }
 }
