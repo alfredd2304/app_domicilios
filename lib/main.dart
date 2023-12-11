@@ -1,3 +1,4 @@
+import 'package:app_domicilios/providers/estado_de_red.dart';
 import 'package:app_domicilios/screens/Repartidor/repartidor_main.dart';
 import 'package:app_domicilios/screens/Usuario/usuario_main.dart';
 import 'package:app_domicilios/providers/estado_pedido.dart';
@@ -18,6 +19,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => PedidoRealizadoProvider()),
       ChangeNotifierProvider(create: (_) => EstadoPedidoProvider()),
+      ChangeNotifierProvider(create: (_) => EstadoDeRedProvider())
     ],
     child: const MyApp(),
   ));

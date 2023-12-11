@@ -28,7 +28,8 @@ class _HomeState extends State<Home> {
           Padding(
               padding: const EdgeInsets.only(right: 15),
               child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await Future.delayed(const Duration(seconds: 1));
                     FirebaseAuth.instance.signOut().then((value) {
                       Navigator.pushReplacement(
                           context,

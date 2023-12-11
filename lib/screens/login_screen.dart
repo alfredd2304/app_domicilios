@@ -1,9 +1,11 @@
+import 'package:app_domicilios/providers/estado_de_red.dart';
 import 'package:app_domicilios/reusable_widgets/reusable_widget.dart';
 import 'package:app_domicilios/screens/home_screen.dart';
 import 'package:app_domicilios/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,18 +39,28 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             width: 180,
             child: loginSignUpButtonButton(context, true, () async {
-              try {
-                await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: _emailTextController.text,
-                        password: _passwordTextController.text)
-                    .then((value) {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Home()));
-                });
-              } catch (error) {
-                // ignore: use_build_context_synchronously
-                _mostrarAlertaError(context, "Email o Contraseña incorrectos");
+              await context
+                  .read<EstadoDeRedProvider>()
+                  .onVerificarEstadoDeRed();
+              bool estadoRed = context.read<EstadoDeRedProvider>().estadoRed;
+              await Future.delayed(const Duration(seconds: 1));
+              if (estadoRed == true) {
+                try {
+                  await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Home()));
+                  });
+                } catch (error) {
+                  // ignore: use_build_context_synchronously
+                  _mostrarAlertaError(
+                      context, "Email o Contraseña incorrectos");
+                }
+              } else {
+                _mostrarAlertaError(context, "Verifica estado de Red");
               }
             }),
           ),
