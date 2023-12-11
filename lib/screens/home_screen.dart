@@ -2,6 +2,8 @@ import 'package:app_domicilios/main.dart';
 import 'package:app_domicilios/screens/Repartidor/repartidor_main.dart';
 import 'package:app_domicilios/screens/Usuario/usuario_main.dart';
 import 'package:app_domicilios/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -27,8 +29,13 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.only(right: 15),
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => const MyApp()));
+                    FirebaseAuth.instance.signOut().then((value) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()));
+                      _mostrarAlerta(context);
+                    });
                   },
                   child: const Text("Log Out")))
         ],
@@ -49,4 +56,24 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+void _mostrarAlerta(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Hasta Luego..."),
+        content: const Text("Has cerrado sesion."),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Aceptar"),
+          ),
+        ],
+      );
+    },
+  );
 }

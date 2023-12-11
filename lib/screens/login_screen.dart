@@ -1,6 +1,8 @@
 import 'package:app_domicilios/reusable_widgets/reusable_widget.dart';
 import 'package:app_domicilios/screens/home_screen.dart';
 import 'package:app_domicilios/screens/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _userNameTextController = TextEditingController();
+  TextEditingController _emailTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          reusableTextField("Enter Username", Icons.person_2_outlined, false,
-              _userNameTextController),
+          reusableTextField("Enter Email", Icons.person_2_outlined, false,
+              _emailTextController),
           const SizedBox(
             height: 30,
           ),
@@ -34,9 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(
             width: 180,
-            child: loginSignUpButtonButton(context, true, () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Home()));
+            child: loginSignUpButtonButton(context, true, () async {
+              try {
+                await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text)
+                    .then((value) {
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => Home()));
+                });
+              } catch (error) {
+                // ignore: use_build_context_synchronously
+                _mostrarAlertaError(context, "Email o Contraseña incorrectos");
+              }
             }),
           ),
           signUpOption()
@@ -54,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
         GestureDetector(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()));
+                MaterialPageRoute(builder: (context) => const SignUpScreen()));
           },
           child: const Text(
             " Sign up",
@@ -65,4 +78,24 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
+}
+
+void _mostrarAlertaError(BuildContext context, String error) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Error"),
+        content: Text(error),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      );
+    },
+  );
 }
