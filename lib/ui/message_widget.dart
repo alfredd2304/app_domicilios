@@ -6,12 +6,30 @@ import 'package:get/get.dart';
 import '../controllers/message_controller.dart';
 import '../models/message.dart';
 
-class ChatWidget extends StatelessWidget {
+class ChatWidget extends StatefulWidget {
+  const ChatWidget({super.key});
+
+  @override
+  State<ChatWidget> createState() => _ChatWidgetState();
+}
+
+class _ChatWidgetState extends State<ChatWidget> {
   final ChatController chatController = Get.put(ChatController());
   final TextEditingController _msgCtrl = TextEditingController();
+  @override
+  void dispose() {
+    chatController.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      chatController.start(user.uid);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat Widget'),
@@ -22,6 +40,7 @@ class ChatWidget extends StatelessWidget {
             child: Obx(
               () => ListView.builder(
                 itemCount: chatController.messages.length,
+                controller: chatController.scrollController,
                 itemBuilder: (context, index) {
                   var msg = chatController.messages[index];
                   return ListTile(
@@ -56,25 +75,14 @@ class ChatWidget extends StatelessWidget {
   }
 
   Future<void> _sendMessage() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      String username = 'user';
-
-      if (user != null) {
-        DatabaseReference userRef =
-            FirebaseDatabase.instance.ref().child('users').child(user.uid);
-        DatabaseEvent event = await userRef.child('username').once();
-        DataSnapshot snapshot = event.snapshot;
-
-        if (snapshot.value != null) {
-          username = snapshot.value.toString();
-        }
-      }
-
+    String? username = await chatController.getUsername();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (username != null) {
       await chatController.sendMessage(
-          Message(_msgCtrl.text, username, user?.email ?? 'user@mail.com'));
-    } catch (e) {
-      print('Error al enviar el mensaje: $e');
+          Message(_msgCtrl.text, username, 'user@mail.com'), user!.uid);
+      chatController.scrollToEnd();
+    } else {
+      print("Error: No se pudo obtener el nombre de usuario");
     }
   }
 }
