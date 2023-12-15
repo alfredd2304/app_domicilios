@@ -5,7 +5,7 @@ class PedidoRealizadoProvider with ChangeNotifier {
 
   bool get pedidoRealizado => _pedidoRealizado;
 
-  void onPedidoRealizado() {
+  Future<void> onPedidoRealizado() async {
     _pedidoRealizado = true;
     notifyListeners();
   }

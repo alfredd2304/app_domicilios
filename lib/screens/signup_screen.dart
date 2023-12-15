@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app_domicilios/main.dart';
+import 'package:app_domicilios/models/users.dart';
 import 'package:app_domicilios/providers/estado_de_red.dart';
 import 'package:app_domicilios/reusable_widgets/reusable_widget.dart';
 import 'package:app_domicilios/screens/home_screen.dart';
@@ -9,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../controllers/user_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -68,12 +71,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               .createUserWithEmailAndPassword(
                                   email: _emailTextController.text,
                                   password: _passwordTextController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MyApp()));
-                            _mostrarAlerta(context);
+                              .then((value) async {
+                            Usuario newUser = Usuario(
+                                _userNameTextController.text,
+                                _emailTextController.text,
+                                FirebaseAuth.instance.currentUser?.uid ?? '');
+
+                            UserController userController = UserController();
+
+                            await userController.addUser(newUser);
+
+                            await _mostrarAlerta(context);
                           });
                         } catch (error) {
                           if (error is FirebaseAuthException) {
@@ -108,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-void _mostrarAlerta(BuildContext context) {
+Future<void> _mostrarAlerta(BuildContext context) async {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -125,7 +133,12 @@ void _mostrarAlerta(BuildContext context) {
         ],
       );
     },
-  );
+  ).then((value) {
+    Navigator.pop(
+      context,
+      MaterialPageRoute(builder: (context) => const MyApp()),
+    );
+  });
 }
 
 void _mostrarAlertaError(BuildContext context, String error) {
