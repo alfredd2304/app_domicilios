@@ -1,9 +1,7 @@
 import 'package:app_domicilios/main.dart';
 import 'package:app_domicilios/screens/Repartidor/repartidor_main.dart';
 import 'package:app_domicilios/screens/Usuario/usuario_main.dart';
-import 'package:app_domicilios/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {

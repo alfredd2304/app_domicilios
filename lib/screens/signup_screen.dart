@@ -4,10 +4,7 @@ import 'package:app_domicilios/main.dart';
 import 'package:app_domicilios/models/users.dart';
 import 'package:app_domicilios/providers/estado_de_red.dart';
 import 'package:app_domicilios/reusable_widgets/reusable_widget.dart';
-import 'package:app_domicilios/screens/home_screen.dart';
-import 'package:app_domicilios/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -36,15 +36,18 @@ class _MapPageState extends State<MapPage> {
                     CameraPosition(target: _pRestaurante, zoom: 13),
                 markers: {
                   Marker(
-                      markerId: MarkerId("_currentLocation"),
+                      markerId: const MarkerId("_currentLocation"),
+                      infoWindow: const InfoWindow(title: "Repartidor"),
                       icon: BitmapDescriptor.defaultMarker,
                       position: _currentPosition!),
                   const Marker(
                       markerId: MarkerId("_sourceLocation"),
+                      infoWindow: InfoWindow(title: "Casa"),
                       icon: BitmapDescriptor.defaultMarker,
                       position: _pRestaurante),
                   const Marker(
                       markerId: MarkerId("_destinationLocation"),
+                      infoWindow: InfoWindow(title: "Restaurante"),
                       icon: BitmapDescriptor.defaultMarker,
                       position: _pUsuario)
                 }),

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -81,8 +80,20 @@ class _ChatWidgetState extends State<ChatWidget> {
       await chatController.sendMessage(
           Message(_msgCtrl.text, username, 'user@mail.com'), user!.uid);
       chatController.scrollToEnd();
+      await _responderComoRepartidor();
+      chatController.scrollToEnd();
     } else {
       print("Error: No se pudo obtener el nombre de usuario");
     }
+  }
+
+  Future<void> _responderComoRepartidor() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    await Future.delayed(const Duration(seconds: 2));
+    chatController.sendMessage(
+        Message("Hola, soy el repartidor... en que te puedo ayudar?",
+            "Repartidor", "repartidor@gmail.com"),
+        user!.uid);
   }
 }

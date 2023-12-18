@@ -3,6 +3,8 @@ import 'package:app_domicilios/providers/pedido_realizado.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/message_widget.dart';
+
 class RepartidorHome extends StatefulWidget {
   const RepartidorHome({super.key});
 
@@ -28,11 +30,28 @@ class _RepartidorHomeState extends State<RepartidorHome> {
           const Text("Tienes un nuevo pedido"),
           Text("El estado del pedido es: $estadoPedido"),
           if (estadoPedido != "Finalizado")
-            ElevatedButton(
-              onPressed: () {
-                _mostrarAlerta(context);
-              },
-              child: const Text("Cambiar estado"),
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _mostrarAlerta(context);
+                  },
+                  child: const Text("Cambiar estado"),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatWidget()));
+                  },
+                  icon: const Icon(Icons.chat),
+                  color: Colors.blueAccent,
+                )
+              ],
             )
           else
             const SizedBox()

@@ -17,4 +17,8 @@ class Message {
   toJson() {
     return {"text": text, "user": user, "mail": mail};
   }
+
+  Message.fromRepartidor(this.text)
+      : user = 'Repartidor',
+        mail = 'repartidor@mail.com';
 }

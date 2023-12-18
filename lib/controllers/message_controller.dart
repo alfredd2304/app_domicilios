@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
 
 import '../models/message.dart';
-import '../models/users.dart';
 
 class ChatController extends GetxController {
   final String dbName = "users";
