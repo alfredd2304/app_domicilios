@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "56169743637",
+    "project_id": "app-domicilios-f7ff9",
+    "storage_bucket": "app-domicilios-f7ff9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56169743637:android:176abe0747559b2425551c",
+        "android_client_info": {
+          "package_name": "com.example.app_domicilios"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1V_0Zr7zXVyakCvj63Y89QP5PJ3pwVqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
