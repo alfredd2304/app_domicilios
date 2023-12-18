@@ -1,5 +1,6 @@
 import 'package:app_domicilios/providers/estado_pedido.dart';
 import 'package:app_domicilios/providers/pedido_realizado.dart';
+import 'package:app_domicilios/screens/Usuario/map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,11 +63,8 @@ class _UserHomeState extends State<UserHome> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ChatWidget())); // aqui debera ir el eidget del chat
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ChatWidget()));
             },
             icon: const Icon(Icons.chat),
             color: Colors.blueAccent,
@@ -92,11 +90,22 @@ class _UserOrderStateState extends State<UserOrderState> {
         appBar: AppBar(
           title: const Text("Pedido del Usuario"),
         ),
-        body: Column(children: [
-          Text(
-            "Estado Del pedido: $estadoPedido",
-          ),
-        ]));
+        body: Center(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              "Estado Del pedido: $estadoPedido",
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const MapPage()));
+                },
+                child: const Text("Ver Mapa"))
+          ]),
+        ));
   }
 }
 
